@@ -42,12 +42,3 @@ function getRandomPhrase(phraseArray){
 	phraseNumber = Math.round(phraseRand);
 	chosenPhrase = phraseArray[phraseNumber];
 }
-
-phrzsr();
-
-// EXAMPLE HTML
-// <body>
-//		<div id="example_phrase">
-//			<script src="phrzsr.js"></script>  
-//		</div>
-//	</body>
