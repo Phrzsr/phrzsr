@@ -1,44 +1,27 @@
+var apiURL = "https://api.github.com/repos/Phrzsr/phrzsr/contents/motivational?callback=grab"
 
+var pArray = []
 
-function phrzsr() {
-	httpGet("https://raw.github.com/Phrzsr/phrzsr/master/motivational", function(response){
-		document.write("callback test");
-		phraseArray = [];
-		phraseArray = response.split("\n");
-		console.log(response);
+function phrzsr(cat) {
+	var script = document.createElement('script');
+	// need: use cat to select category
+	script.src = apiURL;
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
 
-		
-		document.write(getRandomPhrase(phraseArray));
-	});
-};
-
-function httpGet(url, callback) {
-	document.write("httpGet test");
-	var httpRequest; // create our XMLHttpRequest object
-	if (window.XMLHttpRequest) {
-		httpRequest = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		// Internet Explorer is stupid
-		httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
- 	}
-
-	httpRequest.onreadystatechange = function() {
-		// inline function to check the status
-		// of our request
-		// this is called on every state change
-		if (httpRequest.readyState == 4 &&
-				httpRequest.status == 200) {
-			callback.call(httpRequest.responseText);
-			// call the callback function
-		}
-	};
-	httpRequest.open('GET', url);
-	httpRequest.send();
-};
+function grab(response) {
+    var b64 = response.data.content.replace(/\n|\r/g, "");
+    // issue: sometimes it screws up hyphens, sometimes it adds extra quotes
+    var dec = window.atob(b64);
+	// issue: returns a blank array element at the very end
+    pArray = dec.split("\n");
+    console.log(pArray);
+	console.log(getRandomPhrase(pArray));
+	// need: write to document
+}
 
 function getRandomPhrase(phraseArray){
-	phraseLimit  = phraseArray.length - 1;
-	phraseRand 	 = Math.random()*phraseLimit;
-	phraseNumber = Math.round(phraseRand);
-	chosenPhrase = phraseArray[phraseNumber];
+	return phraseArray[Math.floor(Math.random() * phraseArray.length)];
 }
+
+phrzsr();
