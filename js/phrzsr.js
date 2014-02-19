@@ -1,11 +1,27 @@
-var apiURL = "https://api.github.com/repos/Phrzsr/phrzsr/contents/motivational?callback=grab"
+// need: auto-complete so any argument that starts with m = motivational, etc.
+var URLs = {
+	motivational: "https://api.github.com/repos/Phrzsr/phrzsr/contents/motivational?callback=grab",
+	demotivational: "https://api.github.com/repos/Phrzsr/phrzsr/contents/demotivational?callback=grab",
+	farewell: "https://api.github.com/repos/Phrzsr/phrzsr/contents/farewell?callback=grab",
+	gratitude: "https://api.github.com/repos/Phrzsr/phrzsr/contents/gratitude?callback=grab",
+	greeting: "https://api.github.com/repos/Phrzsr/phrzsr/contents/greeting?callback=grab"
+}
 
 var pArray = []
 
 function phrzsr(cat) {
 	var script = document.createElement('script');
-	// need: use cat to select category
-	script.src = apiURL;
+	if (!cat) {
+		url = URLs['motivational'];
+	} else {
+		category = cat.toLowerCase();
+		if (category in URLs) {
+		url = URLs[category];
+		} else {
+			console.log('Please enter a valid category in the phrzsr function');
+		}
+	}
+	script.src = url;
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -15,7 +31,6 @@ function grab(response) {
     var dec = window.atob(b64);
 	// issue: returns a blank array element at the very end
     pArray = dec.split("\n");
-    console.log(pArray);
 	console.log(getRandomPhrase(pArray));
 	// need: write to document
 }
